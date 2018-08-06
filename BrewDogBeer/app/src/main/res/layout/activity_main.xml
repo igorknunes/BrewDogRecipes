@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_list"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@id/iv_beer_list"
+                android:gravity="center"
+                android:text="All Beers" />
+
+            <ImageView
+                android:id="@+id/iv_beer_list"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_list"
+                android:tint="@android:color/black" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@id/iv_favorites"
+                android:gravity="center"
+                android:text="My Favorite Beers" />
+
+            <ImageView
+                android:id="@+id/iv_favorites"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_star"
+                android:tint="@android:color/black" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_random"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@id/iv_house_indication"
+                android:gravity="center"
+                android:text="Random beer to enjoy" />
+
+            <ImageView
+                android:id="@+id/iv_house_indication"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_thumb_up"
+                android:tint="@android:color/black" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:text="BrewDog is a multinational brewery and pub chain based in Ellon, Scotland." />
+
+</LinearLayout>
