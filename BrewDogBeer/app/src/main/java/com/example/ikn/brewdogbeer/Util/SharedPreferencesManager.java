@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class SharedPreferencesManager  {
+public class SharedPreferencesManager {
     public static final String PREFERENCES_NAME = "SHARED_PREFERENCES";
 
     private static SharedPreferences sharedPreferences;

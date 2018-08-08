@@ -8,11 +8,6 @@
     android:gravity="center_horizontal"
     tools:context=".activities.BeerListActivity">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_search"/>
-
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

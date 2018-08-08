@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BrewDog Beer</string>
     <string name="search_hint">Search Beers by name</string>
+    <string name="search">search</string>
 </resources>

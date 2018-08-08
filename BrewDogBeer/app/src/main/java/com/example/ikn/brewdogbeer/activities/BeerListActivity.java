@@ -4,10 +4,14 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.ikn.brewdogbeer.R;
 import com.example.ikn.brewdogbeer.adapters.BeersAdapter;
@@ -26,21 +30,58 @@ public class BeerListActivity extends AppCompatActivity implements Callback<List
     RecyclerView rvBeers;
     String searchableQuery;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_list);
 
-        rvBeers = findViewById(R.id.rv_beers);
-        Intent intent = getIntent();
+        buildActionBar();
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        rvBeers = findViewById(R.id.rv_beers);
+
+        handleIntentAndFetch(getIntent());
+    }
+
+    private void buildActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntentAndFetch(intent);
+    }
+
+    private void handleIntentAndFetch(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction()))
             searchableQuery = intent.getStringExtra(SearchManager.QUERY);
-        }
 
         fetchData(1, searchableQuery);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.search:
+                onSearchRequested();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     @Override
     public void onBeerClick(BeerModel beer) {
