@@ -32,6 +32,10 @@ class BeerModel : Serializable {
     val foodPairing: Array<String>? = null
     val volume: ValueUnitModel? = null
     val boilVolume: ValueUnitModel? = null
+
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
 }
 
 /*

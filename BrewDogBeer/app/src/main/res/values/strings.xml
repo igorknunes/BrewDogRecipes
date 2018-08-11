@@ -2,4 +2,7 @@
     <string name="app_name">BrewDog Beer</string>
     <string name="search_hint">Search Beers by name</string>
     <string name="search">search</string>
+    <string name="random_beer_to_enjoy">Random beer to enjoy</string>
+    <string name="my_favorite_beers">My Favorite Beers</string>
+    <string name="all_recipes">All Recipes</string>
 </resources>

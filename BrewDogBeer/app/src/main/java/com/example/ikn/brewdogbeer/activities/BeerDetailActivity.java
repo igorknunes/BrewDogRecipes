@@ -1,5 +1,6 @@
 package com.example.ikn.brewdogbeer.activities;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ikn.brewdogbeer.R;
+import com.example.ikn.brewdogbeer.Util.FavoritesManager;
 import com.example.ikn.brewdogbeer.model.BeerModel;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +22,8 @@ public class BeerDetailActivity extends AppCompatActivity {
     BeerModel selectedBeer;
     ImageView ivBeer;
     TextView tvName, tvAbv, tvIbu, tvSrm, tvBrewed;
+    FloatingActionButton fabFavorite;
+    Boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,10 @@ public class BeerDetailActivity extends AppCompatActivity {
         buildActionBar();
         buildViewItems();
         buildContent();
+
+        isFavorite = FavoritesManager.isFavorite(selectedBeer);
+        setFabImageResource();
+        fabFavorite.setOnClickListener(view -> onFavoriteClick());
     }
 
     private void buildActionBar() {
@@ -46,6 +54,7 @@ public class BeerDetailActivity extends AppCompatActivity {
         tvIbu = findViewById(R.id.tv_ibu);
         tvSrm = findViewById(R.id.tv_srm);
         tvBrewed = findViewById(R.id.tv_brewed);
+        fabFavorite = findViewById(R.id.fab_favorite);
     }
 
     private void buildContent() {
@@ -57,6 +66,16 @@ public class BeerDetailActivity extends AppCompatActivity {
         tvBrewed.setText(selectedBeer.getFirstBrewed());
     }
 
+    private void onFavoriteClick() {
+        if (isFavorite)
+            FavoritesManager.removeOne(selectedBeer);
+        else
+            FavoritesManager.addOne(selectedBeer);
+
+        isFavorite = !isFavorite;
+        setFabImageResource();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -66,5 +85,11 @@ public class BeerDetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setFabImageResource() {
+        int drawableId = isFavorite ? R.drawable.ic_star : R.drawable.ic_star_border;
+        fabFavorite.setImageResource(drawableId);
+        fabFavorite.setTag(drawableId);
     }
 }

@@ -22,7 +22,8 @@
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@id/iv_beer_list"
                 android:gravity="center"
-                android:text="All Beers" />
+                android:textSize="20sp"
+                android:text="@string/all_recipes" />
 
             <ImageView
                 android:id="@+id/iv_beer_list"
@@ -50,7 +51,8 @@
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@id/iv_favorites"
                 android:gravity="center"
-                android:text="My Favorite Beers" />
+                android:textSize="20sp"
+                android:text="@string/my_favorite_beers" />
 
             <ImageView
                 android:id="@+id/iv_favorites"
@@ -78,7 +80,8 @@
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@id/iv_house_indication"
                 android:gravity="center"
-                android:text="Random beer to enjoy" />
+                android:textSize="20sp"
+                android:text="@string/random_beer_to_enjoy" />
 
             <ImageView
                 android:id="@+id/iv_house_indication"
@@ -95,6 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
+        android:textSize="18sp"
         android:text="BrewDog is a multinational brewery and pub chain based in Ellon, Scotland." />
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.ikn.brewdogbeer.activities;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.ikn.brewdogbeer.R;
+import com.example.ikn.brewdogbeer.Util.FavoritesManager;
+import com.example.ikn.brewdogbeer.Util.SuggestionProvider;
 import com.example.ikn.brewdogbeer.adapters.BeersAdapter;
 import com.example.ikn.brewdogbeer.api.BrewDogService;
 import com.example.ikn.brewdogbeer.model.BeerModel;
@@ -24,20 +27,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BeerListActivity extends AppCompatActivity implements Callback<List<BeerModel>>, BeersAdapter.Listener  {
+import static com.example.ikn.brewdogbeer.Util.FavoritesManager.FAVORITE_LIST_KEY;
+
+public class BeerListActivity extends AppCompatActivity implements Callback<List<BeerModel>>, BeersAdapter.Listener {
 
     BeersAdapter adapter;
     RecyclerView rvBeers;
     String searchableQuery;
+    int currentPage;
+    Boolean isFavoriteList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_list);
 
+        isFavoriteList = getIntent().getBooleanExtra(FAVORITE_LIST_KEY, false);
+
         buildActionBar();
 
         rvBeers = findViewById(R.id.rv_beers);
+        currentPage = 1;
 
         handleIntentAndFetch(getIntent());
     }
@@ -55,11 +65,19 @@ public class BeerListActivity extends AppCompatActivity implements Callback<List
     }
 
     private void handleIntentAndFetch(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction()))
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             searchableQuery = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    SuggestionProvider.AUTHORITY, SuggestionProvider.MODE);
+            suggestions.saveRecentQuery(searchableQuery, null);
+        }
 
-        fetchData(1, searchableQuery);
+        if (isFavoriteList)
+            fetchFavorites();
+        else
+            fetchData(currentPage, searchableQuery);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,7 +88,7 @@ public class BeerListActivity extends AppCompatActivity implements Callback<List
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
@@ -98,18 +116,11 @@ public class BeerListActivity extends AppCompatActivity implements Callback<List
         }
     }
 
-    private void displayBeers (List<BeerModel> beers){
+    private void displayBeers(List<BeerModel> beers) {
         if (adapter == null) {
             adapter = new BeersAdapter(beers, this);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             rvBeers.setLayoutManager(layoutManager);
-
-//            if (addInfiniteScrollListener) {
-//                InfiniteScrollListener listener = new InfiniteScrollListener(layoutManager);
-//                listener.setOnLoadMoreListener(this::onLoadMore);
-//
-//                rvCards.addOnScrollListener(listener);
-//            }
 
             rvBeers.setAdapter(adapter);
         } else {
@@ -120,10 +131,14 @@ public class BeerListActivity extends AppCompatActivity implements Callback<List
         }
     }
 
+    private void fetchFavorites() {
+        displayBeers(FavoritesManager.getFavoriteBeers());
+    }
+
     public void fetchData(int page, String searchQuery) {
-        if (searchQuery == null || searchQuery.isEmpty() )
+        if (searchQuery == null || searchQuery.isEmpty())
             BrewDogService.getInstance().getBeers(page, BrewDogService.PAGE_SIZE).enqueue(this);
-        else{
+        else {
             BrewDogService.getInstance().getBeersByName(page, BrewDogService.PAGE_SIZE, searchQuery).enqueue(this);
         }
     }
